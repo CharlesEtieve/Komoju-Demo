@@ -7,13 +7,15 @@ import com.komoju.demo.domain.models.DomainPaymentMethod
 import com.komoju.demo.domain.models.DomainPaymentSession
 import com.komoju.demo.domain.services.PaymentService
 import com.komoju.demo.presentation.BaseViewModel
+import com.komoju.demo.presentation.helpers.Base64ToBitmapHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 class ScanViewModel(
-    private val paymentService: PaymentService
+    private val paymentService: PaymentService,
+    private val base64ToBitmapHelper: Base64ToBitmapHelper
 ) : BaseViewModel() {
 
     val qrBitmap = MutableStateFlow<Bitmap?>(null)
@@ -28,7 +30,7 @@ class ScanViewModel(
             isLoading.value = true
             try {
                 val paymentSession = paymentService.createPaymentSession(amount, paymentMethod)
-                qrBitmap.value = TODO("decode to bitmap")
+                qrBitmap.value = base64ToBitmapHelper.invoke(paymentSession.qrDataBase64)
                 watchPaymentStatus(paymentSession, amount, paymentMethod)
             } catch (exception: Exception) {
                 handleException(
