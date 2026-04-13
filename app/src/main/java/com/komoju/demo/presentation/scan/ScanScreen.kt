@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.komoju.demo.domain.models.DomainAmount
 import com.komoju.demo.domain.models.DomainPaymentMethod
+import com.komoju.demo.domain.models.DomainPaymentStatus
 import com.komoju.demo.presentation.ErrorPopup
 import com.komoju.demo.presentation.safeCollect
 
@@ -25,12 +26,25 @@ import com.komoju.demo.presentation.safeCollect
 fun ScanScreen(
     amount: DomainAmount,
     paymentMethod: DomainPaymentMethod,
-    viewModel: ScanViewModel
+    viewModel: ScanViewModel,
+    onPaymentCompleted: () -> Unit = {},
+    onPaymentFailed: () -> Unit = {}
 ) {
     ErrorPopup(viewModel)
 
     LaunchedEffect(amount, paymentMethod) {
         viewModel.setup(amount, paymentMethod)
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.paymentResult.collect { status ->
+            when (status) {
+                DomainPaymentStatus.PAID -> onPaymentCompleted()
+                DomainPaymentStatus.FAILED,
+                DomainPaymentStatus.EXPIRED -> onPaymentFailed()
+                else -> { }
+            }
+        }
     }
 
     val qrBitmap = viewModel.qrBitmap.safeCollect()

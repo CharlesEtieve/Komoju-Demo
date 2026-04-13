@@ -5,12 +5,16 @@ import androidx.lifecycle.viewModelScope
 import com.komoju.demo.domain.models.DomainAmount
 import com.komoju.demo.domain.models.DomainPaymentMethod
 import com.komoju.demo.domain.models.DomainPaymentSession
+import com.komoju.demo.domain.models.DomainPaymentStatus
 import com.komoju.demo.domain.services.PaymentService
 import com.komoju.demo.presentation.BaseViewModel
 import com.komoju.demo.presentation.helpers.Base64ToBitmapHelper
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ScanViewModel(
@@ -20,6 +24,9 @@ class ScanViewModel(
 
     val qrBitmap = MutableStateFlow<Bitmap?>(null)
     val isLoading = MutableStateFlow(true)
+
+    private val _paymentResult = MutableSharedFlow<DomainPaymentStatus>()
+    val paymentResult: SharedFlow<DomainPaymentStatus> = _paymentResult
 
     fun setup(amount: DomainAmount, paymentMethod: DomainPaymentMethod) {
         createPaymentSession(amount, paymentMethod)
@@ -44,6 +51,14 @@ class ScanViewModel(
     private fun watchPaymentStatus(paymentSession: DomainPaymentSession, amount: DomainAmount, paymentMethod: DomainPaymentMethod) {
         paymentService
             .getPaymentStatus(paymentSession.sessionId)
+            .onEach { status ->
+                when (status) {
+                    DomainPaymentStatus.PAID,
+                    DomainPaymentStatus.FAILED,
+                    DomainPaymentStatus.EXPIRED -> _paymentResult.emit(status)
+                    else -> { /* keep polling */ }
+                }
+            }
             .catch { exception ->
                 handleException(
                     exception = exception,
