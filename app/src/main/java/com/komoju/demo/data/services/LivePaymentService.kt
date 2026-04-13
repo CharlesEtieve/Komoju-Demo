@@ -44,14 +44,13 @@ class LivePaymentService(
     }
 
     override fun getPaymentStatus(paymentSessionId: String): Flow<DomainPaymentStatus> = flow {
-        /*if (BuildConfig.MOCK_PAY_ENABLED) {
+        if (BuildConfig.MOCK_PAY_ENABLED) {
             mockPay(paymentSessionId)
-        }*/
-        // add delay before fetching status to prevent
-        //delay(10000L)
+        }
         while (true) {
             var delayMs = INITIAL_POLLING_INTERVAL_MS
             val status = withRetry(
+                initialDelayMs = delayMs,
                 shouldRetry = { it is DomainException.TooManyRequests },
                 onUpdateDelay = { delayMs = it }
             ) { sessionApi.getSessionStatus(paymentSessionId).status.toDomainPaymentStatus() }
@@ -77,6 +76,6 @@ class LivePaymentService(
 
     companion object {
         private const val MOCK_PAY_DELAY_MS = 2500L
-        private const val INITIAL_POLLING_INTERVAL_MS = 2000L
+        private const val INITIAL_POLLING_INTERVAL_MS = 3000L
     }
 }

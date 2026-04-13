@@ -19,7 +19,7 @@ suspend fun <T> withRetry(
             return block()
         } catch (exception: Exception) {
             val exception = exception.toDomain()
-            if (shouldRetry(exception)) {
+            if (shouldRetry(exception) && delayMs <= maxDelayMs) {
                 delay(delayMs)
                 delayMs = (delayMs * backoffFactor).toLong().coerceAtMost(maxDelayMs)
                 onUpdateDelay?.invoke(delayMs)
