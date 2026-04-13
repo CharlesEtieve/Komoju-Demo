@@ -26,6 +26,8 @@ I will use Claude to make the screens because you seem more interested in my ar
 
 To run unit tests, launch this command : ./gradlew :app:testDevelopmentDebugUnitTest
 
+I would love to have more time to add unit tests on my viewmodels too with UnconfinedTestDispatcher.
+
 I need also to tell you that a REST API to listen for payment status updates is not the best option.
 For best performance and convenience I would use GRPC to listen for change.
 
