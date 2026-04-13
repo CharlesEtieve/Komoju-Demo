@@ -11,3 +11,13 @@ fun String.toDomainPaymentMethod(): DomainPaymentMethod {
         else -> DomainPaymentMethod.UNKNOWN
     }
 }
+
+fun DomainPaymentMethod.toApiString(): String {
+    return when (this) {
+        DomainPaymentMethod.PAYPAY -> "paypay"
+        DomainPaymentMethod.RAKUTEN_PAY -> "rakuten_pay"
+        DomainPaymentMethod.ALIPAY -> "alipay"
+        DomainPaymentMethod.LINEPAY -> "linepay"
+        DomainPaymentMethod.UNKNOWN -> "unknown"
+    }
+}
