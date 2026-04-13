@@ -28,9 +28,27 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
+    }
 
-        //TODO should be different according to variants
-        buildConfigField("String", "BASE_URL", "\"https://hhesnmkmyq2wxsbdjwp4s246gu0fkofo.lambda-url.ap-northeast-1.on.aws\"")
+    flavorDimensions += "environment"
+    productFlavors {
+        create("development") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            buildConfigField("Boolean", "MOCK_PAY_ENABLED", "true")
+            buildConfigField("String", "BASE_URL", "\"https://hhesnmkmyq2wxsbdjwp4s246gu0fkofo.lambda-url.ap-northeast-1.on.aws\"")
+        }
+        create("staging") {
+            dimension = "environment"
+            applicationIdSuffix = ".staging"
+            buildConfigField("Boolean", "MOCK_PAY_ENABLED", "false")
+            buildConfigField("String", "BASE_URL", "\"https://hhesnmkmyq2wxsbdjwp4s246gu0fkofo.lambda-url.ap-northeast-1.on.aws\"")
+        }
+        create("production") {
+            dimension = "environment"
+            buildConfigField("Boolean", "MOCK_PAY_ENABLED", "false")
+            buildConfigField("String", "BASE_URL", "\"https://hhesnmkmyq2wxsbdjwp4s246gu0fkofo.lambda-url.ap-northeast-1.on.aws\"")
+        }
     }
 
     buildTypes {

@@ -1,5 +1,6 @@
 package com.komoju.demo.data.services
 
+import com.komoju.demo.BuildConfig
 import com.komoju.demo.data.apis.CreateSessionRequest
 import com.komoju.demo.data.apis.SessionApi
 import com.komoju.demo.data.models.toApiString
@@ -12,9 +13,11 @@ import com.komoju.demo.domain.models.DomainPaymentMethod
 import com.komoju.demo.domain.models.DomainPaymentSession
 import com.komoju.demo.domain.models.DomainPaymentStatus
 import com.komoju.demo.domain.services.PaymentService
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
 class LivePaymentService(
     private val sessionApi: SessionApi
@@ -41,7 +44,9 @@ class LivePaymentService(
     }
 
     override fun getPaymentStatus(paymentSessionId: String): Flow<DomainPaymentStatus> = flow {
-        //TODO mock payment
+        if (BuildConfig.MOCK_PAY_ENABLED) {
+            mockPay(paymentSessionId)
+        }
         while (true) {
             var delayMs = INITIAL_POLLING_INTERVAL_MS
             val status = withRetry(
@@ -59,7 +64,17 @@ class LivePaymentService(
         }
     }
 
+    private suspend fun mockPay(paymentSessionId: String) {
+        coroutineScope {
+            launch {
+                delay(MOCK_PAY_DELAY_MS)
+                sessionApi.mockPay(paymentSessionId)
+            }
+        }
+    }
+
     companion object {
+        private const val MOCK_PAY_DELAY_MS = 2500L
         private const val INITIAL_POLLING_INTERVAL_MS = 2000L
     }
 }
