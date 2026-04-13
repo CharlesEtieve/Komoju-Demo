@@ -10,6 +10,7 @@ kotlin = "2.2.10"
 composeBom = "2026.02.01"
 coroutines = "1.10.2"
 ktor = "3.4.2"
+koin = "4.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,9 @@ ktor-client-core = { group = "io.ktor", name = "ktor-client-core" }
 ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json" }
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
