@@ -17,6 +17,9 @@ You gave me 3 hours so here is my plan to complete it :
 
 # Technical remark
 
+You must add your api key in your local.properties:
+API_KEY=tk_xxx
+
 The function mockPayment will not be exposed by PaymentService, it will be an internal function.
 The function will be available for development variant only.
 
