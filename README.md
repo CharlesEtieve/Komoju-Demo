@@ -23,6 +23,9 @@ The function will be available for development variant only.
 For this use case retry api call will intentionally be handled at the Flow level, not via an OkHttp interceptor. I will create a withRetry utils to handle this.
 
 I will use Claude to make the screens because you seem more interested in my architecture.
+
+To run unit tests, launch this command : ./gradlew :app:testDevelopmentDebugUnitTest
+
 I need also to tell you that a REST API to listen for payment status updates is not the best option.
 For best performance and convenience I would use GRPC to listen for change.
 
