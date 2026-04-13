@@ -44,9 +44,11 @@ class LivePaymentService(
     }
 
     override fun getPaymentStatus(paymentSessionId: String): Flow<DomainPaymentStatus> = flow {
-        if (BuildConfig.MOCK_PAY_ENABLED) {
+        /*if (BuildConfig.MOCK_PAY_ENABLED) {
             mockPay(paymentSessionId)
-        }
+        }*/
+        // add delay before fetching status to prevent
+        //delay(10000L)
         while (true) {
             var delayMs = INITIAL_POLLING_INTERVAL_MS
             val status = withRetry(
