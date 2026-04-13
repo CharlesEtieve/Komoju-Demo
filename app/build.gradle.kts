@@ -1,8 +1,14 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
+
+val gradleLocalProperties = gradleLocalProperties(rootDir, providers)
+val apiKey: String = gradleLocalProperties.getProperty("API_KEY")
+    ?: System.getenv("API_KEY")
 
 android {
     namespace = "com.komoju.demo"
@@ -20,6 +26,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+
+        //TODO should be different according to variants
+        buildConfigField("String", "BASE_URL", "\"https://hhesnmkmyq2wxsbdjwp4s246gu0fkofo.lambda-url.ap-northeast-1.on.aws\"")
     }
 
     buildTypes {
@@ -37,6 +48,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
