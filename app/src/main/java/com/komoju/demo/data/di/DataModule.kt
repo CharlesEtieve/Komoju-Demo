@@ -23,7 +23,7 @@ val dataModule = module {
             }
             defaultRequest {
                 url(BuildConfig.BASE_URL)
-                headers { append("X-API-Key", BuildConfig.API_KEY) }
+                headers { append("Authorization", "Bearer ${BuildConfig.API_KEY}") }
             }
         }
     }
