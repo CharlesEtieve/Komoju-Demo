@@ -28,6 +28,8 @@ My plan to complete the app in 3 hours with decent architecture:
 
 # Technical remark
 
+I put the api key in local.properties to prevent it from being committed to the repository, as it's sensitive data that must stay private.
+
 You must add your api key in your local.properties:
 API_KEY=tk_xxx
 
