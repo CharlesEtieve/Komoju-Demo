@@ -1,13 +1,24 @@
+This project is an Android app written in Kotlin using Clean Architecture with MVVM.
+I used Kotlin Coroutines with Flow for asynchronous operations, Ktor for API calls, and Koin for dependency injection.
+
+# Installation
+
+Open the repository with Android Studio to compile.
+
+Put your api key in your local.properties file:
+API_KEY=tk_xxx
+
 # Plan
 
-You gave me 3 hours so here is my plan to complete it :
+My plan to complete the app in 3 hours with decent architecture:
 
 - Create Android project and add dependencies for Kotlin, Coroutine Flow, Ktor and Koin (15 min)
 - Create DomainPaymentMethod, DomainPaymentSession, DomainPaymentStatus, DomainAmount and DomainException models (15 min)
 - Create PaymentMethodRepository (interface and impl) and Api with getPaymentMethodList method (15 min)
 - Create PaymentService (interface and impl) and Api with createPaymentSession, getPaymentStatus methods (15 min)
 - Create Base64ToBitmapHelper (5 min)
-- Create withRetry utils (5 min)- Create PaymentMethodScreen and viewModel (10 min)
+- Create withRetry utils (5 min)
+- Create PaymentMethodScreen and viewModel (10 min)
 - Create PaymentAmountScreen and viewModel (10 min)
 - Create PaymentQRCodeScreen and viewModel (10 min)
 - Create PaymentCompletionScreen (10 min)
@@ -25,7 +36,7 @@ The function will be available for development variant only.
 
 For this use case retry api call will intentionally be handled at the Flow level, not via an OkHttp interceptor. I will create a withRetry utils to handle this.
 
-I will use Claude to make the screens because you seem more interested in my architecture.
+I will use Claude to quickly build the screens.
 
 To run unit tests, launch this command : ./gradlew :app:testDevelopmentDebugUnitTest
 
