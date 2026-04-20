@@ -44,6 +44,11 @@ I would love to have more time to add unit tests on my viewmodels too with Uncon
 I need also to tell you that a REST API to listen for payment status updates is not the best option.
 For best performance and convenience I would use GRPC to listen for change.
 
+I found a bug in mockPay: `coroutineScope { launch { ... } }` suspends
+until the child completes, so the mock runs sequentially and delays
+the polling by ~2.5s. Using `channelFlow` in `getPaymentStatus` allows
+the mock call to run truly in parallel.
+
 # UX remark
 
 I will remove the radio buttons because one tap to select the payment method is enough.
